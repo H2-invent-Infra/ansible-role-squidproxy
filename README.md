@@ -1,4 +1,4 @@
-squid3-squidguard-monitored
+squid3-squidguard
 =========
 
 Ansible scripts to install squid3 proxy server, squidguard redirector with custom blacklists and zabbix agent with squidclient to get that stuff monitored.
