@@ -1,0 +1,28 @@
+---
+# default vars
+
+squid3_package: squid3
+squid3_daemon: squid3
+squid3_path: /etc/squid3
+squid3_conf: /etc/squid3/squid.conf
+
+squidguard_package: squidguard
+squidguard_path: /etc/squidguard
+squidguard_conf: /etc/squidguard/squidGuard.conf
+squidguard_dbhome: /var/lib/squidguard/db
+
+squidclient_package: squidclient
+
+zabbixagent_package: zabbix-agent
+zabbixagent_daemon: zabbix-agent
+zabbixagent_path: /etc/zabbix
+zabbixagent_conf: /etc/zabbix/zabbix_agentd.conf
+
+#Put your own config files in the following directories
+squid3_source_config: ./
+
+squidguard_source_config: squidGuard.conf
+squidguard_source_blacklists: blacklists/blacklists.tgz
+
+zabbixagent_source_config: zabbix/
+
