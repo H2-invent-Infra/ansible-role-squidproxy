@@ -17,6 +17,7 @@ zabbixagent_package: zabbix-agent
 zabbixagent_daemon: zabbix-agent
 zabbixagent_path: /etc/zabbix
 zabbixagent_conf: /etc/zabbix/zabbix_agentd.conf
+zabbixserver_ip: 192.168.100.100
 
 #Put your own config files in the following directories
 squid3_source_config: ./
