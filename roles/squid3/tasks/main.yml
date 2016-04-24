@@ -4,6 +4,10 @@
 - name: Install Squid3
   apt: pkg={{  squid3_package }} state=installed update_cache=true
   register: squid3installed
+  
+- name: Start Squid3
+  when: squid3installed|success
+  service: name={{ squid3_daemon }} state=started enabled=yes
 
 - name: Backup Config
   when: squid3installed|success

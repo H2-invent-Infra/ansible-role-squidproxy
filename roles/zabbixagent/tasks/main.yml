@@ -5,6 +5,10 @@
   apt: pkg={{ zabbixagent_package }} state=installed update_cache=true
   register: zabbixagentinstalled
   
+- name: Start Zabbix Agent
+  when: zabbixagentinstalled|success
+  service: name={{ zabbixagent_daemon }} state=started enabled=yes  
+  
 - name: Copy Zabbix Config
   when: zabbixagentinstalled|success
   copy: src={{ zabbixagent_source_config }} dest={{ zabbixagent_path }} owner=root group=root force=yes
