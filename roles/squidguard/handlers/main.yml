@@ -1,0 +1,5 @@
+---
+# handlers file for squidguard
+
+- name: Restart Squid3
+  service: name={{ squid3_daemon }} state=restarted enabled=yes

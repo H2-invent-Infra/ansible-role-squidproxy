@@ -1,0 +1,5 @@
+---
+# handlers file for zabbixagent
+
+- name: Restart Zabbix Agent
+  service: name={{ zabbixagent_daemon }} state=restarted enabled=yes

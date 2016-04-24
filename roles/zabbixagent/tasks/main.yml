@@ -9,24 +9,24 @@
   when: zabbixagentinstalled|success
   service: name={{ zabbixagent_daemon }} state=started enabled=yes  
   
-- name: Copy Zabbix Config
+- name: Copy Zabbix Agent Config
   when: zabbixagentinstalled|success
   copy: src={{ zabbixagent_source_config }} dest={{ zabbixagent_path }} owner=root group=root force=yes
   
-- name: Insert Zabbix Server IP to Zabbix Agent Config
+- name: Modify Zabbix Agent Config
   when: zabbixagentinstalled|success
   lineinfile:
     dest: "{{ zabbixagent_conf }}"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
+    state: present
   with_items:
     - regexp: "^Server="
       line: "Server={{ zabbixserver_ip }}"
     - regexp: "^ServerActive="
       line: "ServerActive={{ zabbixserver_ip }}"
-  
-- name: Insert Hostname to Zabbix Agent Config
-  when: zabbixagentinstalled|success
-  lineinfile: dest={{ zabbixagent_conf }} insertafter="^# Hostname=" line="Hostname={{ ansible_hostname }}"
+    - regexp: "^# Hostname="
+      line: "Hostname={{ ansible_hostname }}"
+  notify: Restart Zabbix Agent
   
 - debug: msg="Put this hostname {{ ansible_hostname }} to zabbix"

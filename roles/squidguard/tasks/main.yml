@@ -12,11 +12,15 @@
 
 - name: Add url_rewrite_program to Squid Config
   when: squidguardconfigured|success
-  lineinfile: dest={{ squid3_conf }} line="url_rewrite_program /usr/bin/squidGuard -c {{ squidguard_conf }}" insertbefore='BOF' state=present
-  
-- name: Add url_rewrite_children to Squid Config
-  when: squidguardconfigured|success
-  lineinfile: dest={{ squid3_conf }} line="url_rewrite_children 20" insertbefore='BOF' state=present
+  lineinfile: 
+    dest: "{{ squid3_conf }}" 
+    line: "{{ item }}"
+    insertbefore: BOF
+    state: present
+  with_items:
+    - "url_rewrite_program /usr/bin/squidGuard -c {{ squidguard_conf }}" 
+    - "url_rewrite_children 20"
+  notify: Restart Squid3
   
 - name: Copy Blacklists
   when: squidguardconfigured|success
