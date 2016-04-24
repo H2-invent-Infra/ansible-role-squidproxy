@@ -3,15 +3,11 @@
 
 - name: Install SquidGuard
   apt: pkg={{ squidguard_package }} state=installed update_cache=true
-  register: squidguardinstalled
 
 - name: Copy SquidGuard Config
-  when: squidguardinstalled|success
   copy: src={{ squidguard_source_config }} dest={{ squidguard_path }} owner=proxy group=proxy force=yes
-  register: squidguardconfigured
 
 - name: Add url_rewrite_program to Squid Config
-  when: squidguardconfigured|success
   lineinfile: 
     dest: "{{ squid3_conf }}" 
     line: "{{ item }}"
@@ -23,15 +19,12 @@
   notify: Restart Squid3
   
 - name: Copy Blacklists
-  when: squidguardconfigured|success
   unarchive: src={{ squidguard_source_blacklists }} dest={{ squidguard_dbhome }} owner=root group=root copy=yes
   
 - name: Create DB files
-  when: squidguardconfigured|success
   command: /usr/bin/squidGuard -C all
   
 - name: Change files ownership and permissions
-  when: squidguardconfigured|success
   file:
     path: "{{ squidguard_dbhome }}"
     owner: proxy

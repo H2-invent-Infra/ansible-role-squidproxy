@@ -3,18 +3,14 @@
 
 - name: Install Squid3
   apt: pkg={{  squid3_package }} state=installed update_cache=true
-  register: squid3installed
   
 - name: Start Squid3
-  when: squid3installed|success
   service: name={{ squid3_daemon }} state=started enabled=yes
 
 - name: Backup Config
-  when: squid3installed|success
   command: creates={{ squid3_conf }}.bak cp {{ squid3_conf }} {{ squid3_conf }}.bak
 
 - name: Copy Config
-  when: squid3installed|success
   copy: src={{ squid3_source_config }} dest={{ squid3_path }} owner=root group=root force=yes
   notify: Restart Squid3
   
