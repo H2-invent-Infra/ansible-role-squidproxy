@@ -21,7 +21,7 @@
       line: "Server={{ zabbixserver_ip }}"
     - regexp: "^ServerActive="
       line: "ServerActive={{ zabbixserver_ip }}"
-    - regexp: "^# Hostname="
+    - regexp: "^Hostname="
       line: "Hostname={{ ansible_hostname }}"
   notify: Restart Zabbix Agent
   
