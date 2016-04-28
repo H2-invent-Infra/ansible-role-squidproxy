@@ -1,7 +1,7 @@
 ---
 - name: Install Zabbix agent + Squid3 + SquidGuard + Squidclient
   hosts: proxy
-  sudo: yes
+  become: yes
   roles: 
     - squid3
     - squidguard
