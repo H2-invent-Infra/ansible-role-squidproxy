@@ -3,8 +3,12 @@
 
 - name: Install Squid Client
   apt: pkg={{ squidclient_package }} state=installed update_cache=true
-  
+
+- stat: path={{ zabbixagent_conf }}
+  register: zabbixagentconfig_file
+    
 - name: Insert strings to Zabbix Config
+  when: zabbixagentconfig_file.stat.exists==true
   blockinfile:
     dest: "{{ zabbixagent_conf }}"
     block: | 

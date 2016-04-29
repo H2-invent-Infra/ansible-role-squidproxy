@@ -7,7 +7,11 @@
 - name: Copy SquidGuard Config
   copy: src={{ squidguard_source_config }} dest={{ squidguard_path }} owner=proxy group=proxy force=yes
 
+- stat: path={{ squid3_conf }}
+  register: squidconfig_file
+  
 - name: Add url_rewrite_program to Squid Config
+  when: squidconfig_file.stat.exists == true
   lineinfile: 
     dest: "{{ squid3_conf }}" 
     line: "{{ item }}"
