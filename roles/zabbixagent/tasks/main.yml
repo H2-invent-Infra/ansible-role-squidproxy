@@ -25,4 +25,4 @@
       line: "Hostname={{ ansible_hostname }}"
   notify: Restart Zabbix Agent
   
-- debug: msg="Put this hostname {{ ansible_hostname }} to zabbix"
+- debug: msg="Use this hostname configuring a host in Zabbix: {{ ansible_hostname }}"
