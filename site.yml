@@ -1,9 +1,8 @@
 ---
-- name: Install Zabbix agent + Squid3 + SquidGuard + Squidclient
+- name: Squid3 + SquidGuard + Squidclient
   hosts: proxy
   become: yes
   roles: 
     - squid3
     - squidguard
-    - zabbixagent
     - squidclient

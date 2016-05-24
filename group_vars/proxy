@@ -13,17 +13,12 @@ squidguard_dbhome: /var/lib/squidguard/db
 
 squidclient_package: squidclient
 
-zabbixagent_package: zabbix-agent
-zabbixagent_daemon: zabbix-agent
-zabbixagent_path: /etc/zabbix
 zabbixagent_conf: /etc/zabbix/zabbix_agentd.conf
-zabbixserver_ip: 192.168.100.100
+zabbixagent_daemon: zabbix-agent
 
 #Put your own config files in the following directories
 squid3_source_config: ./
 
 squidguard_source_config: squidGuard.conf
 squidguard_source_blacklists: blacklists/blacklists.tgz
-
-zabbixagent_source_config: zabbix/
 
