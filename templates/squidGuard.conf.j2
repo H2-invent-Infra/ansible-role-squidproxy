@@ -1,0 +1,80 @@
+#
+# CONFIG FILE FOR SQUIDGUARD
+#
+# Caution: do NOT use comments inside { }
+#
+
+dbhome /var/lib/squidguard/db/blacklists
+logdir /var/log/squidguard
+
+#
+# TIME RULES:
+#
+
+{% if squidguard_times | length > 0 %}
+{% for time in squidguard_times %}
+time {{ time.name }} {
+{% for c in time.config %}
+	{{ c }}
+{% endfor %}
+}
+
+{% endfor %}
+{% endif %}
+
+#
+# SOURCE ADDRESSES:
+# 
+
+{% if squidguard_srcs | length > 0 %}
+{% for src in squidguard_srcs %}
+time {{ src.name }} {
+{% for c in src.config %}
+	{{ c }}
+{% endfor %}
+}
+
+{% endfor %}
+{% endif %}
+
+#
+# DESTINATION CLASSES:
+#
+
+{% if squidguard_dests | length > 0 %}
+{% for dest in squidguard_dests %}
+time {{ dest.name }} {
+{% for c in dest.config %}
+	{{ c }}
+{% endfor %}
+}
+
+{% endfor %}
+{% endif %}
+
+
+#
+# ACL RULES:
+#
+
+acl {
+
+{% if squidguard_acls | length > 0 %}
+{% for acl in squidguard_acls %}
+{% if acl.times is defined %}
+	{{ acl.src }} within {{ acl.times }} {
+		pass	{{ acl.pass_during_times }}
+		{% if acl.redirect is defind %}redirect {{ acl.redirect }} {% endif %}
+	} else {
+		pass 	{{ acl.pass_out_of_times }}
+		{% if acl.redirect is defind %}redirect {{ acl.redirect }} {% endif %}
+	}
+{% else %}
+	{{ acl.src }} {
+		pass 	{{ acl_pas }}
+	}
+
+{% endfor %}
+{% endif %}
+
+}

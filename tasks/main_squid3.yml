@@ -1,0 +1,24 @@
+---
+# tasks file for squid3
+
+- name: Install Squid3
+  apt:
+    name: "{{  squid3_package }}"
+    state: present
+  
+- name: Start Squid3
+  service:
+    name: "{{ squid3_daemon }}"
+    state: started
+    enabled: true
+
+- name: Copy Config
+  template:
+    src: squid.conf.j2
+    dest: "{{ squid3_conf }}"
+    owner: root
+    group: root
+    force: true
+    backup: true
+  notify: Restart Squid3
+  

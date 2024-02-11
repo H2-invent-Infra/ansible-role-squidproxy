@@ -23,8 +23,13 @@
   notify: Restart Squid3
   
 - name: Copy Blacklists
-  unarchive: src={{ squidguard_source_blacklists }} dest={{ squidguard_dbhome }} owner=root group=root copy=yes
-  
+  template:
+    src: blacklist.txt.j2
+    dest: "{{ squidguard_dbhome }}/{{ item.name }}"
+    owner: root
+    group: root
+  with_items: "{{ squidguard_blacklists }}"
+
 - name: Create DB files
   command: /usr/bin/squidGuard -C all
   

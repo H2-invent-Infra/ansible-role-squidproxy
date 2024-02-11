@@ -1,0 +1,62 @@
+---
+# default vars
+
+squid3_package: squid3
+squid3_daemon: squid3
+squid3_conf: /etc/squid3/squid.conf
+squid3_source_config: squid.conf
+
+squid3_http_port: 3128
+squid3_auth_param: []
+
+squid3_acl_localnet:
+  - 0.0.0.0
+
+squid3_acl_safe_ports:
+  - 80
+  - 443
+  - 8443
+  - 8080
+
+squid3_http_acces_rules: []
+
+
+squidguard_package: squidguard
+squidguard_path: /etc/squidguard
+squidguard_conf: /etc/squidguard/squidGuard.conf
+squidguard_dbhome: /var/lib/squidguard/db
+squidguard_source_config: squidGuard.conf
+
+# abbrev for weekdays: 
+#s = sun, m = mon, t =tue, w = wed, h = thu, f = fri, a = sat
+squidguard_times:
+  - name: workhours
+    config:
+      - weekly mtwhf 08:00 - 16:30
+	    - date *-*-01  08:00 - 16:30
+
+squidguard_srcs:
+  - name: admin
+    config:
+      - ip  		1.2.3.4  1.2.3.5
+	    - user		root foo bar
+	    - within		workhours
+
+squidguard_dests:
+  - name: adult
+    config:
+      - domainlist	BL/adult/domains
+      - urllist		BL/adult/urls
+      - expressionlist	BL/adult/expressions
+      - redirect http://admin.foo.bar.de/cgi-bin/blocked.cgi?clientaddr=%a&clientname=%n&clientuser=%i&clientgroup=%s&targetgroup=%t&url=%u
+
+squidguard_acls:
+  - src: admin
+    times: workhours
+    pass_during_times: any
+    pass_out_of_times: any
+    redirect: 
+
+squidguard_blacklist:
+  - name:
+    items:

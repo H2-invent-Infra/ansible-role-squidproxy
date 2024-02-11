@@ -1,0 +1,78 @@
+#	WELCOME TO SQUID 3.4.8
+#	----------------------------
+#	
+#	This is the documentation for the Squid configuration file.
+#	This documentation can also be found online at:
+#		http://www.squid-cache.org/Doc/config/
+#	
+#	You may wish to look at the Squid home page and wiki for the
+#	FAQ and other documentation:
+#		http://www.squid-cache.org/
+#		http://wiki.squid-cache.org/SquidFaq
+#		http://wiki.squid-cache.org/ConfigExamples
+#	
+
+
+#  include /path/to/included/file/squid.acl.config
+
+
+{% if squid3_auth_param | length > 0 %}
+{% for auth_param in squid3_auth_param %}
+{{ auth_param }}
+{% endfor %}
+{% endif %}
+
+
+#
+# Recommended minimum configuration:
+#
+
+{% if squid3_acl_localnet | length > 0 %}
+{% for localnet in squid3_auth_param %}
+acl localnet src {{ localnet }}
+{% endfor %}
+{% endif %}
+
+acl SSL_ports port 443
+{% if squid3_acl_safe_ports | length > 0 %}
+{% for localnet in squid3_auth_param %}
+acl SSL_ports port {{ localnet }}
+{% endfor %}
+{% endif %}
+
+acl CONNECT method CONNECT
+
+#
+# Recommended minimum Access Permission configuration:
+#
+# Deny requests to certain unsafe ports
+http_access deny !Safe_ports
+
+# Deny CONNECT to other than secure SSL ports
+http_access deny CONNECT !SSL_ports
+
+# Only allow cachemgr access from localhost
+http_access allow localhost manager
+http_access deny manager
+
+http_access deny to_localhost
+
+#
+# INSERT YOUR OWN RULE(S) HERE TO ALLOW ACCESS FROM YOUR CLIENTS
+#
+{% if squid3_http_acces_rules | length > 0 %}
+{% for rule in squid3_http_acces_rules %}
+http_access {{ rule }}
+{% endfor %}
+{% endif %}
+
+
+http_access allow localhost
+http_access deny all
+
+# Squid normally listens to port 3128
+http_port {{ squid3_http_port }}
+
+# Active SquidGuard in Squid3
+url_rewrite_program /usr/bin/squidGuard -c {{ squidguard_conf }}
+url_rewrite_children 20
