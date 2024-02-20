@@ -34,7 +34,7 @@ squidguard_times:
     config:
       - weekly mtwhf 08:00 - 16:30
 	    - date *-*-01  08:00 - 16:30
-
+ 
 squidguard_srcs:
   - name: admin
     config:
@@ -45,7 +45,7 @@ squidguard_srcs:
 squidguard_dests:
   - name: adult
     config:
-      - domainlist	BL/adult/domains
+      - domainlist	domain_adult
       - urllist		BL/adult/urls
       - expressionlist	BL/adult/expressions
       - redirect http://admin.foo.bar.de/cgi-bin/blocked.cgi?clientaddr=%a&clientname=%n&clientuser=%i&clientgroup=%s&targetgroup=%t&url=%u
@@ -58,5 +58,6 @@ squidguard_acls:
     redirect: 
 
 squidguard_blacklist:
-  - name:
+  - name: domain_adult
     items:
+      - example.com
